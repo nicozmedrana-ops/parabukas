@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Records</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Student Records</h1>
+
+  <button onclick="addStudent()">Add Student</button>
+  <button onclick="removeStudent()">Remove Last</button>
+  <button onclick="findStudent()">Find Student</button>
+  <button onclick="averageGrade()">Average</button>
+
+  <p id="message"></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Grade</th>
+        <th>Remark</th>
+      </tr>
+    </thead>
+    <tbody id="result"></tbody>
+  </table>
+
+  <h3 id="average"></h3>
+
+  <script>
+    let students = [];
+ 
+    function addStudent() {
+      let name = prompt("Enter name:");
+      let grade = Number(prompt("Enter grade:"));
+
+      students.push({
+        name: name,
+        grade: grade,
+        remark: grade >= 75 ? "Passed" : "Failed"
+      });
+
+      displayStudents();
+    }
+
+    function removeStudent() {
+      if (confirm("Remove the last student?")) {
+        students.pop();
+        displayStudents();
+      }
+    }
+
+    function displayStudents() {
+      let output = "";
+
+      for (let s of students) {
+        output += "<tr>";
+        output += "<td>" + s.name + "</td>";
+        output += "<td>" + s.grade + "</td>";
+        output += "<td>" + s.remark + "</td>";
+        output += "</tr>";
+      }
+
+      document.getElementById("result").innerHTML = output;
+      document.getElementById("message").textContent =
+        "Total Students: " + students.length;
+    }
+
+    function findStudent() {
+      let name = prompt("Enter name to find:").toLowerCase();
+      let s = students.find(function(student) {
+        return student.name.toLowerCase() === name;
+      });
+
+      if (s) {
+        alert("Name: " + s.name +
+              "\nGrade: " + s.grade +
+              "\nRemark: " + s.remark);
+      } else {
+        alert("Student not found!");
+      }
+    }
+
+    function averageGrade() {
+      let total = 0;
+
+      for (let s of students) {
+        total += s.grade;
+      }
+
+      document.getElementById("average").textContent =
+        "Average: " + (total / students.length).toFixed(2);
+    }
+  </script>
+</body>
+</html>
